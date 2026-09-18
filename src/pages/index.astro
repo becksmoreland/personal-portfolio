@@ -1,0 +1,147 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import MediaPlaceholder from '../components/MediaPlaceholder.astro';
+
+const projects = await getCollection('projects');
+const sorted = projects.sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
+const [primary, ...secondary] = sorted;
+---
+
+<BaseLayout>
+  <Header />
+  <main id="main">
+    <section class="hero shell">
+      <div class="hero__copy" data-reveal>
+        <p class="eyebrow"><span>Portfolio / R00</span><span>San Diego, CA</span></p>
+        <h1>Aerospace systems,<br /><em>built with evidence.</em></h1>
+        <p class="hero__lead">
+          An SDSU aerospace engineering student documenting the path from first-principles analysis to hardware, testing, and the next revision.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#work">View selected work <span aria-hidden="true">↘</span></a>
+          <a class="button button--text" href="/resume/">Open résumé <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <div class="hero__visual" data-reveal>
+        <MediaPlaceholder
+          label="Primary project image"
+          note="Replace with flight hardware, a test setup, or a clean CAD render"
+          ratio="portrait"
+          index="MEDIA / 01"
+        />
+      </div>
+
+      <dl class="spec-rail" data-reveal>
+        <div><dt>Program</dt><dd>B.S. Aerospace Engineering</dd></div>
+        <div><dt>School</dt><dd>San Diego State University</dd></div>
+        <div><dt>Level</dt><dd>Sophomore</dd></div>
+        <div><dt>Method</dt><dd>Design · Analyze · Build · Validate</dd></div>
+      </dl>
+    </section>
+
+    <section class="work shell" id="work">
+      <header class="section-heading" data-reveal>
+        <p>01 / Selected work</p>
+        <h2>Engineering decisions,<br />documented end to end.</h2>
+        <span>03 project records</span>
+      </header>
+
+      <article class="featured-project" data-reveal>
+        <a class="featured-project__media" href={`/projects/${primary.data.slug}/`} aria-label={`Open ${primary.data.title}`}>
+          <MediaPlaceholder
+            label={primary.data.title}
+            note="Reserved for the strongest visual from this project"
+            index="PRJ. 01 / HERO"
+          />
+        </a>
+        <div class="featured-project__body">
+          <div class="record-line">
+            <span>PRJ.01</span><span>{primary.data.revision}</span><span>{primary.data.status}</span>
+          </div>
+          <h3><a href={`/projects/${primary.data.slug}/`}>{primary.data.title}</a></h3>
+          <p>{primary.data.summary}</p>
+          <ul class="tag-list" aria-label="Disciplines">
+            {primary.data.disciplines.map((item) => <li>{item}</li>)}
+          </ul>
+          <a class="project-link" href={`/projects/${primary.data.slug}/`}>Read the project record <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+
+      <div class="secondary-projects">
+        {secondary.map((project, index) => (
+          <article class="secondary-project" data-reveal>
+            <a href={`/projects/${project.data.slug}/`} aria-label={`Open ${project.data.title}`}>
+              <MediaPlaceholder
+                label={project.data.title}
+                note={index === 0 ? 'Replace with analysis output or a technical plot' : 'Replace with build, integration, or test photography'}
+                ratio="square"
+                index={`PRJ. 0${index + 2} / MEDIA`}
+              />
+            </a>
+            <div class="record-line">
+              <span>PRJ.0{index + 2}</span><span>{project.data.revision}</span><span>{project.data.year}</span>
+            </div>
+            <h3><a href={`/projects/${project.data.slug}/`}>{project.data.title}</a></h3>
+            <p>{project.data.summary}</p>
+            <a class="project-link" href={`/projects/${project.data.slug}/`}>View record <span aria-hidden="true">↗</span></a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="approach shell" aria-labelledby="approach-title">
+      <header class="section-heading section-heading--compact" data-reveal>
+        <p>02 / Working method</p>
+        <h2 id="approach-title">Build the argument.<br />Then build the thing.</h2>
+      </header>
+      <ol class="process-list" data-reveal>
+        <li><span>01</span><h3>Define</h3><p>Turn an open problem into constraints, interfaces, and a testable requirement.</p></li>
+        <li><span>02</span><h3>Model</h3><p>Use first principles and simulation to expose the decisions that matter.</p></li>
+        <li><span>03</span><h3>Build</h3><p>Translate the design into something that can be fabricated, integrated, and inspected.</p></li>
+        <li><span>04</span><h3>Validate</h3><p>Compare expected and measured behavior, then carry the result into the next revision.</p></li>
+      </ol>
+    </section>
+
+    <section class="about shell" id="about">
+      <div class="about__intro" data-reveal>
+        <p class="section-label">03 / About</p>
+        <h2>Early in the career.<br /><em>Serious about the work.</em></h2>
+      </div>
+      <div class="about__body" data-reveal>
+        <p class="about__lead">
+          I’m a sophomore studying aerospace engineering at San Diego State University. This portfolio is a working record of how I approach technical problems—not just the final render.
+        </p>
+        <p>
+          Each project will connect analysis to physical decisions, show the evidence behind the result, and make my individual contribution clear. The site will evolve with every design review, test, and build cycle.
+        </p>
+        <dl class="about__facts">
+          <div><dt>Current revision</dt><dd>Portfolio R00</dd></div>
+          <div><dt>Based in</dt><dd>San Diego, California</dd></div>
+          <div><dt>Next update</dt><dd>Project documentation</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="contact shell" id="contact" data-reveal>
+      <p class="section-label">04 / Contact</p>
+      <div>
+        <h2>Let’s build something<br />that has to work.</h2>
+        <p>Replace these draft links with your professional contact details before sharing the site.</p>
+      </div>
+      <nav class="contact__links" aria-label="Contact links">
+        <a href="mailto:your.email@example.com">Email <span>↗</span></a>
+        <a href="https://www.linkedin.com/">LinkedIn <span>↗</span></a>
+        <a href="https://github.com/">GitHub <span>↗</span></a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <span>AE / Portfolio R00</span>
+    <span>Designed for clarity, evidence, and iteration.</span>
+    <a href="#main">Back to top ↑</a>
+  </footer>
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string;
+  note?: string;
+  ratio?: 'wide' | 'portrait' | 'square';
+  index?: string;
+}
+
+const { label, note = 'Project media pending', ratio = 'wide', index = 'FIG. 00' } = Astro.props;
+---
+
+<div class:list={['media-placeholder', `media-placeholder--${ratio}`]} role="img" aria-label={`${label}: ${note}`}>
+  <div class="media-placeholder__grid"></div>
+  <div class="media-placeholder__axis media-placeholder__axis--x"></div>
+  <div class="media-placeholder__axis media-placeholder__axis--y"></div>
+  <span class="media-placeholder__index">{index}</span>
+  <div class="media-placeholder__copy">
+    <strong>{label}</strong>
+    <span>{note}</span>
+  </div>
+  <span class="media-placeholder__corner">R00</span>
+</div>

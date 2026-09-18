@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+---
+
+<BaseLayout title="Record not found — Aerospace Engineering Portfolio">
+  <Header detail />
+  <main id="main" class="not-found shell">
+    <p class="section-label">ERR / 404</p>
+    <h1>Record not found.</h1>
+    <p>The requested project record does not exist or has moved to a new revision.</p>
+    <a class="button button--primary" href="/">Return to portfolio ↗</a>
+  </main>
+</BaseLayout>
