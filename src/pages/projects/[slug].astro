@@ -11,6 +11,64 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const isNasaProject = project.data.slug === 'primary-engineering-project';
+const nasaFocusAreas = [
+  {
+    id: 'recovery-controller',
+    label: 'Autonomous Recovery Controller',
+    eyebrow: 'Control / Recovery',
+    title: 'Recovering stable flight after an aerial release.',
+    description: 'I developed the post-release control sequence used to arrest deployment transients, recover vehicle attitude, and transition the UAS toward stable autonomous flight after separation from the carrier aircraft.',
+    sections: [
+      { title: 'Recovery sequence', text: 'Defined the post-release progression from deployment disturbance through attitude recovery and stable flight.' },
+      { title: 'Controller tuning', text: 'Used logged attitude, rate, altitude, and command response to compare control changes across drop tests.' },
+      { title: 'Stability verification', text: 'Evaluated recovery time, overshoot, and settled behavior before advancing to the next release configuration.' }
+    ]
+  },
+  {
+    id: 'flight-test',
+    label: 'Flight Test & Evaluation',
+    eyebrow: 'Test / Evidence',
+    title: 'Using wind-tunnel and flight evidence to drive each revision.',
+    description: 'I helped plan and execute the validation campaign, connecting wind-tunnel force and moment data, functional checks, and flight logs to specific structural, avionics, and control-system changes.',
+    sections: [
+      { title: 'Test planning', text: 'Helped structure wind-tunnel, functional, flight, and release-test activities around specific engineering questions.' },
+      { title: 'Instrumentation & evidence', text: 'Connected force and moment data, vehicle telemetry, and flight logs to design and configuration changes.' },
+      { title: 'Release operations', text: 'Supported readiness, pilot coordination, telemetry monitoring, and recovery evaluation during carrier-UAS drops.' }
+    ]
+  },
+  {
+    id: 'prototyping',
+    label: 'Prototyping',
+    eyebrow: 'Hardware / Iteration',
+    title: 'Building flight-ready hardware for downwash and deployment loads.',
+    description: 'I translated mission and test requirements into integrated vehicle hardware across three prototypes, supporting rapid fabrication, avionics commissioning, structural analysis, and redesign for the Black Hawk operating environment.',
+    sections: [
+      { title: 'Vehicle architecture', text: 'Translated mission constraints and trade-study decisions into an integrated, helicopter-deployable multirotor configuration.' },
+      { title: 'Rapid integration', text: 'Built, commissioned, and revalidated avionics across three prototypes, including a first flight-ready build in four days.' },
+      { title: 'Structural iteration', text: 'Used FEA and test observations to reduce redesigned-component mass by 20%+ while maintaining structural margins.' }
+    ]
+  },
+  {
+    id: 'flight-log-analysis',
+    label: 'Custom Flight Log Analysis',
+    eyebrow: 'Software / Analysis',
+    title: 'Turning each drop into an engineering comparison.',
+    description: 'I created a Python analysis workflow tailored to the drop-test program, converting controller telemetry and flight logs into recovery behavior, stability, and iteration-to-iteration performance evidence.',
+    sections: [
+      { title: 'Data ingestion', text: 'Automated the processing and alignment of controller telemetry and flight-log channels from each test event.' },
+      { title: 'Metric extraction', text: 'Calculated drop-specific recovery, attitude, stability, and transient-response measures for engineering review.' },
+      { title: 'Revision comparison', text: 'Produced repeatable plots and summaries that made performance changes visible across vehicle and controller revisions.' }
+    ]
+  }
+];
+const nasaResults = [
+  'Delivered three integrated SAR multirotor prototypes; the first flight-ready vehicle was completed in four days.',
+  'Executed 15+ wind-tunnel runs across 18 wind-on hours and completed 10+ flight tests.',
+  'Completed three carrier-UAS releases from 30+ feet with successful recovery after every release.',
+  'Reduced redesigned-component mass by 20%+ while maintaining analyzed structural margins.',
+  'Demonstrated a controlled Black Hawk deployment architecture for future autonomous SAR missions.'
+];
 ---
 
 <BaseLayout title={`${project.data.title} — Aerospace Engineering Portfolio`} description={project.data.summary}>
@@ -18,22 +76,49 @@ const { Content } = await render(project);
   <main id="main" class="project-page">
     <header class="project-hero shell">
       <a class="back-link" href="/#work">← All projects</a>
-      <div class="project-hero__title" data-reveal>
-        <div class="record-line">
+      <div class:list={['project-hero__title', { 'project-hero__title--nasa': isNasaProject }]} data-reveal>
+        {!isNasaProject && <div class="record-line">
           <span>{project.data.revision}</span><span>{project.data.status}</span><span>{project.data.year}</span>
-        </div>
+        </div>}
         <h1>{project.data.title}</h1>
         <p>{project.data.summary}</p>
+        {isNasaProject && (
+          <div class="project-hero__seal">
+            <img src="/nasa-meatball.svg" alt="NASA insignia" width="150" height="124" />
+            <span>NASA Ames / AMA</span>
+          </div>
+        )}
       </div>
       <dl class="project-hero__specs" data-reveal>
         <div><dt>Role</dt><dd>{project.data.role}</dd></div>
-        <div><dt>Disciplines</dt><dd>{project.data.disciplines.join(' · ')}</dd></div>
-        <div><dt>Record</dt><dd>{project.data.slug}</dd></div>
+        <div>
+          <dt>Disciplines</dt>
+          <dd><ul class="project-discipline-tags">{project.data.disciplines.map((discipline) => <li>{discipline}</li>)}</ul></dd>
+        </div>
+        <div><dt>{isNasaProject ? 'Duration' : 'Record'}</dt><dd>{isNasaProject ? '10 weeks' : project.data.slug}</dd></div>
       </dl>
     </header>
 
     <section class="project-cover shell" data-reveal>
-      <MediaPlaceholder label={project.data.title} note="Replace with the project's defining image" index="PROJECT / COVER" />
+      {isNasaProject ? (
+        <div class="project-cover__video">
+          <video
+            data-project-video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            disablepictureinpicture
+            controlslist="nodownload nofullscreen noremoteplayback"
+            aria-label="NASA Ames wind-tunnel testing footage"
+          >
+            <source src="/media/nasa-ames-uas-banner.mp4" type="video/mp4" />
+          </video>
+        </div>
+      ) : (
+        <MediaPlaceholder label={project.data.title} note="Replace with the project's defining image" index="PROJECT / COVER" />
+      )}
     </section>
 
     <section class="project-metrics shell" aria-label="Project metrics" data-reveal>
@@ -50,19 +135,86 @@ const { Content } = await render(project);
         <p>02 / Ownership</p><h2>The contribution</h2><div><p>{project.data.contribution}</p></div>
       </div>
       <div class="narrative-block" data-reveal>
-        <p>03 / Evidence</p><h2>The result</h2><div><p>{project.data.results}</p></div>
+        <p>03 / Evidence</p><h2>The result</h2><div>
+          {isNasaProject ? (
+            <ul class="narrative-results">{nasaResults.map((result) => <li>{result}</li>)}</ul>
+          ) : <p>{project.data.results}</p>}
+        </div>
       </div>
-      <div class="project-prose" data-reveal><Content /></div>
+      {!isNasaProject && <div class="project-prose" data-reveal><Content /></div>}
     </section>
 
-    <section class="project-gallery shell" aria-label="Project gallery">
-      {project.data.gallery.map((image, index) => (
-        <figure data-reveal>
-          <MediaPlaceholder label={image.label} note={image.caption} ratio={index % 2 ? 'portrait' : 'wide'} index={image.label} />
-          <figcaption><span>{image.label}</span>{image.caption}</figcaption>
-        </figure>
-      ))}
-    </section>
+    {isNasaProject ? (
+      <section class="project-focus shell" data-project-focus data-reveal aria-labelledby="project-focus-title">
+        <header class="project-focus__heading">
+          <p>04 / Contribution explorer</p>
+          <h2 id="project-focus-title">Explore the work.</h2>
+          <span>Select a system to review its engineering record.</span>
+        </header>
+
+        <div class="project-focus__tabs" role="tablist" aria-label="NASA project contributions">
+          {nasaFocusAreas.map((area, index) => (
+            <button
+              type="button"
+              role="tab"
+              id={`focus-tab-${area.id}`}
+              aria-controls={`focus-panel-${area.id}`}
+              aria-selected={index === 0 ? 'true' : 'false'}
+              tabindex={index === 0 ? '0' : '-1'}
+              data-focus-tab
+            >
+              <span>0{index + 1}</span>{area.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="project-focus__stage">
+          {nasaFocusAreas.map((area, index) => (
+            <article
+              class="project-focus__panel"
+              id={`focus-panel-${area.id}`}
+              role="tabpanel"
+              aria-labelledby={`focus-tab-${area.id}`}
+              hidden={index !== 0}
+              data-focus-panel
+            >
+              <div class="project-focus__intro">
+                <p>{area.eyebrow}</p>
+                <h3>{area.title}</h3>
+                <p>{area.description}</p>
+              </div>
+              <div class="project-focus__media-grid">
+                {area.sections.map((section, sectionIndex) => (
+                  <MediaPlaceholder
+                    label={section.title}
+                    note={`Reserved for ${area.label.toLowerCase()} visual ${sectionIndex + 1}`}
+                    index={`SYS. 0${index + 1} / FIG. 0${sectionIndex + 1}`}
+                  />
+                ))}
+              </div>
+              <div class="project-focus__text-grid">
+                {area.sections.map((section, sectionIndex) => (
+                  <article>
+                    <span>0{sectionIndex + 1}</span>
+                    <h4>{section.title}</h4>
+                    <p>{section.text}</p>
+                  </article>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ) : (
+      <section class="project-gallery shell" aria-label="Project gallery">
+        {project.data.gallery.map((image, index) => (
+          <figure data-reveal>
+            <MediaPlaceholder label={image.label} note={image.caption} ratio={index % 2 ? 'portrait' : 'wide'} index={image.label} />
+            <figcaption><span>{image.label}</span>{image.caption}</figcaption>
+          </figure>
+        ))}
+      </section>
+    )}
 
     <footer class="project-footer shell" data-reveal>
       <p>End of record / {project.data.revision}</p>

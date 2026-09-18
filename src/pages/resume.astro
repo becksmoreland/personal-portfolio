@@ -3,12 +3,78 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 ---
 
-<BaseLayout title="Résumé — Aerospace Engineering Portfolio" description="Résumé record for an SDSU aerospace engineering student.">
+<BaseLayout title="Résumé — Beckham Moreland" description="General and discipline-specific engineering résumés for Beckham Moreland.">
   <Header detail />
-  <main id="main" class="not-found shell">
-    <p class="section-label">DOC / R00</p>
-    <h1>Résumé pending.</h1>
-    <p>Add the final résumé PDF to this portfolio before public release. The navigation and document record are already prepared for it.</p>
-    <a class="button button--primary" href="/#contact">Go to contact ↗</a>
+  <main id="main" class="resume-page shell">
+    <header class="resume-page__header" data-reveal>
+      <div>
+        <p class="section-label">Document library / R00</p>
+        <h1>Résumé</h1>
+        <p>Choose the discipline most relevant to your role. The general engineering résumé is shown by default.</p>
+      </div>
+
+      <label class="resume-selector" for="resume-track">
+        <span>Area of interest</span>
+        <select id="resume-track" data-resume-select>
+          <option value="general" aria-label="General résumé"></option>
+          <option value="mechanical">Mechanical Engineering</option>
+          <option value="test-evaluation">Test &amp; Evaluation</option>
+          <option value="flight-software">Flight Software</option>
+          <option value="hardware">Hardware</option>
+          <option value="manufacturing">Manufacturing</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="resume-viewer" data-reveal aria-live="polite">
+      <header class="resume-viewer__bar" aria-label="Résumé document controls">
+        <div class="resume-viewer__actions">
+          <a href="/resumes/beckham-moreland-general.pdf" target="_blank" data-resume-open>Open / Zoom ↗</a>
+          <a href="/resumes/beckham-moreland-general.pdf" download="Beckham_Moreland_Resume.pdf" data-resume-download>Download ↓</a>
+        </div>
+      </header>
+      <div class="resume-viewer__canvas">
+        <a href="/resumes/beckham-moreland-general.pdf" target="_blank" data-resume-preview-link aria-label="Open selected résumé PDF">
+          <img src="/resumes/previews/beckham-moreland-general.png" alt="Preview of Beckham Moreland's general résumé" data-resume-preview />
+        </a>
+      </div>
+    </section>
   </main>
+
+  <script is:inline>
+    const resumeFiles = {
+      general: { label: 'General résumé', file: 'beckham-moreland-general.pdf' },
+      mechanical: { label: 'Mechanical Engineering résumé', file: 'beckham-moreland-mechanical.pdf' },
+      'test-evaluation': { label: 'Test & Evaluation résumé', file: 'beckham-moreland-test-evaluation.pdf' },
+      'flight-software': { label: 'Flight Software résumé', file: 'beckham-moreland-flight-software.pdf' },
+      hardware: { label: 'Hardware résumé', file: 'beckham-moreland-hardware.pdf' },
+      manufacturing: { label: 'Manufacturing résumé', file: 'beckham-moreland-manufacturing.pdf' }
+    };
+
+    const select = document.querySelector('[data-resume-select]');
+    const openLink = document.querySelector('[data-resume-open]');
+    const downloadLink = document.querySelector('[data-resume-download]');
+    const previewLink = document.querySelector('[data-resume-preview-link]');
+    const preview = document.querySelector('[data-resume-preview]');
+
+    function showResume(key) {
+      const resume = resumeFiles[key] ?? resumeFiles.general;
+      const path = `/resumes/${resume.file}`;
+      openLink.href = path;
+      downloadLink.href = path;
+      previewLink.href = path;
+      const previewPath = `/resumes/previews/${resume.file.replace('.pdf', '.png')}`;
+      preview.classList.add('is-switching');
+      preview.alt = `Preview of Beckham Moreland's ${resume.label.toLowerCase()}`;
+      if (preview.getAttribute('src') === previewPath) {
+        preview.classList.remove('is-switching');
+      } else {
+        preview.addEventListener('load', () => preview.classList.remove('is-switching'), { once: true });
+        preview.src = previewPath;
+      }
+    }
+
+    select?.addEventListener('change', (event) => showResume(event.target.value));
+    showResume('general');
+  </script>
 </BaseLayout>
