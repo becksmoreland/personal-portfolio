@@ -6,6 +6,7 @@ role: "Add your role"
 year: "20XX"
 revision: "R00"
 status: "Draft record"
+published: false
 featured: false
 disciplines: ["Fabrication", "Integration", "Testing"]
 problem: "Explain what needed to be built or measured and which physical constraints shaped the design."

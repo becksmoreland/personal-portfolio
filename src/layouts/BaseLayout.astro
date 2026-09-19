@@ -56,6 +56,52 @@ const {
       document.querySelectorAll('[data-reveal]').forEach((element) => observer.observe(element));
 
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const contactSection = document.querySelector('#contact');
+      const contactLinks = Array.from(document.querySelectorAll('.contact__links a'));
+
+      const cueContactLinks = () => {
+        if (reducedMotion.matches || contactLinks.length === 0) return;
+
+        contactLinks.forEach((link, index) => {
+          const delay = index * 260;
+          window.setTimeout(() => {
+            link.classList.remove('is-contact-cued');
+            window.requestAnimationFrame(() => {
+              const finishCue = (event) => {
+                if (event.target !== link || event.animationName !== 'contact-link-cue') return;
+                link.removeEventListener('animationend', finishCue);
+                link.classList.remove('is-contact-cued');
+              };
+              link.addEventListener('animationend', finishCue);
+              link.classList.add('is-contact-cued');
+            });
+          }, delay);
+        });
+      };
+
+      document.querySelectorAll('[data-contact-trigger]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          if (!contactSection) {
+            window.sessionStorage.setItem('cue-contact-links', 'true');
+            return;
+          }
+
+          const cueObserver = new IntersectionObserver((entries) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            cueObserver.disconnect();
+            cueContactLinks();
+          }, { threshold: 0.35 });
+
+          cueObserver.observe(contactSection);
+        });
+      });
+
+      if (contactSection && window.sessionStorage.getItem('cue-contact-links') === 'true') {
+        window.sessionStorage.removeItem('cue-contact-links');
+        window.setTimeout(cueContactLinks, 320);
+      }
+
       document.querySelectorAll('[data-project-video]').forEach((element) => {
         if (element instanceof HTMLVideoElement && reducedMotion.matches) {
           element.pause();

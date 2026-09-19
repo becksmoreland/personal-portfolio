@@ -328,7 +328,8 @@ a:hover .media-placeholder { border-color: var(--mineral); }
 .about__facts dd,
 .project-hero__specs dd { margin: 0; font-size: .875rem; }
 
-.work { padding-top: 150px; }
+.work { padding-top: clamp(96px, 9vw, 130px); padding-bottom: clamp(64px, 8vw, 110px); }
+.work .section-heading { padding-top: 0; border-top: 0; }
 .section-heading {
   display: grid;
   grid-template-columns: 1fr 2.5fr auto;
@@ -518,10 +519,25 @@ a:hover .media-placeholder { border-color: var(--mineral); }
 .contact__links small { color: var(--muted); font-family: var(--font-sans); font-size: clamp(.88rem, 1.1vw, 1.05rem); font-weight: 500; text-transform: none; letter-spacing: 0; }
 .contact__links a:hover small { color: var(--canvas); }
 .contact__link-icon { transition: transform 180ms ease; }
+.contact__links a.is-contact-cued { animation: contact-link-cue 880ms cubic-bezier(.2,.8,.2,1); }
+.contact__links a.is-contact-cued small { animation: contact-link-cue-detail 880ms cubic-bezier(.2,.8,.2,1); }
+.contact__links a.is-contact-cued .contact__link-icon { animation: contact-link-cue-icon 880ms cubic-bezier(.2,.8,.2,1); }
 .contact__links a.is-copied { color: var(--canvas); background: var(--signal); border-color: var(--signal); transform: translateX(4px); animation: contact-copy-confirm 520ms cubic-bezier(.2,.8,.2,1); }
 .contact__links a.is-copied small { color: var(--canvas); }
 .contact__links a.is-copied .contact__link-icon { transform: scale(1.22); }
 @keyframes contact-copy-confirm { 0% { box-shadow: 0 0 0 0 rgba(215,237,89,.42); } 100% { box-shadow: 0 0 0 10px rgba(215,237,89,0); } }
+@keyframes contact-link-cue {
+  0%, 100% { color: var(--text); background: rgba(63,140,255,.06); border-color: var(--line); box-shadow: 0 0 0 0 rgba(63,140,255,0); transform: translateX(0); }
+  24%, 62% { color: #fff; background: rgba(63,140,255,.18); border-color: var(--mineral-bright); box-shadow: 0 0 0 4px rgba(63,140,255,.09), 0 12px 28px rgba(0,0,0,.2); transform: translateX(5px); }
+}
+@keyframes contact-link-cue-detail {
+  0%, 100% { color: var(--muted); }
+  24%, 62% { color: #dbe9ff; }
+}
+@keyframes contact-link-cue-icon {
+  0%, 100% { transform: translateX(0) scale(1); }
+  24%, 62% { transform: translateX(2px) scale(1.08); }
+}
 
 .site-footer { min-height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: var(--muted); border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: .625rem; text-transform: uppercase; letter-spacing: .08em; }
 .site-footer a { text-decoration: none; }

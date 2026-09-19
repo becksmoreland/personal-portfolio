@@ -19,7 +19,7 @@ import flightTestCard from '../../assets/flight-test-card.png';
 import flightTestPilotedValidation from '../../assets/flight-test-piloted-validation.png';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects');
+  const projects = await getCollection('projects', ({ data }) => data.published);
   return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project } }));
 }
 

@@ -6,6 +6,7 @@ role: "Add your role"
 year: "20XX"
 revision: "R00"
 status: "Draft record"
+published: false
 featured: false
 disciplines: ["Modeling", "Simulation", "Verification"]
 problem: "Describe the quantity being predicted, the assumptions, and the decision the model needed to support."
