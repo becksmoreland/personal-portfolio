@@ -10,7 +10,7 @@ const sorted = projects.sort((a, b) => Number(b.data.featured) - Number(a.data.f
 const [primary, ...secondary] = sorted;
 ---
 
-<BaseLayout>
+<BaseLayout title="Beckham Moreland Portfolio">
   <Header />
   <main id="main">
     <section class="hero shell">
@@ -219,7 +219,7 @@ const [primary, ...secondary] = sorted;
         <p>If you’re working on something interesting or think I could contribute to your team, feel free to reach out.</p>
       </div>
       <nav class="contact__links" aria-label="Contact links">
-        <a href="mailto:beckham.hayes@gmail.com"><span>Email<small>beckham.hayes@gmail.com</small></span><span aria-hidden="true">↗</span></a>
+        <a href="mailto:beckham.hayes@gmail.com" data-email-copy data-email-address="beckham.hayes@gmail.com"><span>Email<small data-email-copy-label aria-live="polite">beckham.hayes@gmail.com</small></span><span class="contact__link-icon" data-email-copy-icon aria-hidden="true">↗</span></a>
         <a href="https://www.linkedin.com/in/becksm" target="_blank" rel="noreferrer"><span>LinkedIn<small>linkedin.com/in/becksm</small></span><span aria-hidden="true">↗</span></a>
       </nav>
     </section>

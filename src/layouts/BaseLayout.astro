@@ -94,6 +94,58 @@ const {
           });
         });
       });
+
+      const fallbackCopy = (value) => {
+        const field = document.createElement('textarea');
+        field.value = value;
+        field.setAttribute('readonly', '');
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        field.style.pointerEvents = 'none';
+        document.body.append(field);
+        field.select();
+        const copyCommand = Reflect.get(document, 'execCommand');
+        const copied = typeof copyCommand === 'function' && Boolean(Reflect.apply(copyCommand, document, ['copy']));
+        field.remove();
+        return copied;
+      };
+
+      document.querySelectorAll('[data-email-copy]').forEach((link) => {
+        link.addEventListener('click', async (event) => {
+          if (!(link instanceof HTMLAnchorElement) || link.dataset.copying === 'true') return;
+          event.preventDefault();
+
+          const address = link.dataset.emailAddress ?? '';
+          const label = link.querySelector('[data-email-copy-label]');
+          const icon = link.querySelector('[data-email-copy-icon]');
+          const originalLabel = label?.textContent ?? address;
+          const originalIcon = icon?.textContent ?? '↗';
+          link.dataset.copying = 'true';
+
+          let copied = false;
+          try {
+            await navigator.clipboard.writeText(address);
+            copied = true;
+          } catch {
+            copied = fallbackCopy(address);
+          }
+
+          link.classList.add('is-copied');
+          if (label) label.textContent = copied ? 'Copied — opening mail app…' : 'Opening mail app…';
+          if (icon) icon.textContent = copied ? '✓' : '↗';
+
+          window.setTimeout(() => {
+            window.location.href = link.href;
+          }, 850);
+
+          window.setTimeout(() => {
+            link.classList.remove('is-copied');
+            delete link.dataset.copying;
+            if (label) label.textContent = originalLabel;
+            if (icon) icon.textContent = originalIcon;
+          }, 2600);
+        });
+      });
     </script>
   </body>
 </html>

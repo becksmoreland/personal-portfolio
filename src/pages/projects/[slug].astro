@@ -3,6 +3,20 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import MediaPlaceholder from '../../components/MediaPlaceholder.astro';
+import recoveryWorkflow from '../../assets/recovery-simulation-workflow.png';
+import recoveryConsole from '../../assets/recovery-console-logs.png';
+import recoveryArchitecture from '../../assets/recovery-control-architecture.png';
+import prototypingFullCad from '../../assets/prototyping-full-cad.png';
+import prototypingCrossSection from '../../assets/prototyping-cross-section-cad.png';
+import prototypingPlateFeaUrl from '../../assets/prototyping-plate-fea.mp4?url';
+import flightLogHelicopterReport from '../../assets/flight-log-helicopter-report.png';
+import flightLogRecoveryTimeline from '../../assets/flight-log-recovery-timeline.png';
+import flightLogRecoverySignal from '../../assets/flight-log-recovery-signal.png';
+import flightLogZoomedVelocity from '../../assets/flight-log-zoomed-velocity.png';
+import flightLogAxisComponents from '../../assets/flight-log-axis-components.png';
+import flightTestDropConfiguration from '../../assets/flight-test-drop-configuration.png';
+import flightTestCard from '../../assets/flight-test-card.png';
+import flightTestPilotedValidation from '../../assets/flight-test-piloted-validation.png';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -18,12 +32,8 @@ const nasaFocusAreas = [
     label: 'Autonomous Recovery Controller',
     eyebrow: 'Control / Recovery',
     title: 'Recovering stable flight after an aerial release.',
-    description: 'I developed the post-release control sequence used to arrest deployment transients, recover vehicle attitude, and transition the UAS toward stable autonomous flight after separation from the carrier aircraft.',
-    sections: [
-      { title: 'Recovery sequence', text: 'Defined the post-release progression from deployment disturbance through attitude recovery and stable flight.' },
-      { title: 'Controller tuning', text: 'Used logged attitude, rate, altitude, and command response to compare control changes across drop tests.' },
-      { title: 'Stability verification', text: 'Evaluated recovery time, overshoot, and settled behavior before advancing to the next release configuration.' }
-    ]
+    description: 'I developed and exercised the post-release recovery sequence in a PX4 software-in-the-loop workflow, using live telemetry to verify release detection, descent arrest, stabilization, and safe control handoff before flight testing.',
+    sections: []
   },
   {
     id: 'flight-test',
@@ -43,11 +53,7 @@ const nasaFocusAreas = [
     eyebrow: 'Hardware / Iteration',
     title: 'Building flight-ready hardware for downwash and deployment loads.',
     description: 'I translated mission and test requirements into integrated vehicle hardware across three prototypes, supporting rapid fabrication, avionics commissioning, structural analysis, and redesign for the Black Hawk operating environment.',
-    sections: [
-      { title: 'Vehicle architecture', text: 'Translated mission constraints and trade-study decisions into an integrated, helicopter-deployable multirotor configuration.' },
-      { title: 'Rapid integration', text: 'Built, commissioned, and revalidated avionics across three prototypes, including a first flight-ready build in four days.' },
-      { title: 'Structural iteration', text: 'Used FEA and test observations to reduce redesigned-component mass by 20%+ while maintaining structural margins.' }
-    ]
+    sections: []
   },
   {
     id: 'flight-log-analysis',
@@ -55,11 +61,7 @@ const nasaFocusAreas = [
     eyebrow: 'Software / Analysis',
     title: 'Turning each drop into an engineering comparison.',
     description: 'I created a Python analysis workflow tailored to the drop-test program, converting controller telemetry and flight logs into recovery behavior, stability, and iteration-to-iteration performance evidence.',
-    sections: [
-      { title: 'Data ingestion', text: 'Automated the processing and alignment of controller telemetry and flight-log channels from each test event.' },
-      { title: 'Metric extraction', text: 'Calculated drop-specific recovery, attitude, stability, and transient-response measures for engineering review.' },
-      { title: 'Revision comparison', text: 'Produced repeatable plots and summaries that made performance changes visible across vehicle and controller revisions.' }
-    ]
+    sections: []
   }
 ];
 const nasaResults = [
@@ -183,24 +185,315 @@ const nasaResults = [
                 <h3>{area.title}</h3>
                 <p>{area.description}</p>
               </div>
-              <div class="project-focus__media-grid">
-                {area.sections.map((section, sectionIndex) => (
-                  <MediaPlaceholder
-                    label={section.title}
-                    note={`Reserved for ${area.label.toLowerCase()} visual ${sectionIndex + 1}`}
-                    index={`SYS. 0${index + 1} / FIG. 0${sectionIndex + 1}`}
-                  />
-                ))}
-              </div>
-              <div class="project-focus__text-grid">
-                {area.sections.map((section, sectionIndex) => (
-                  <article>
-                    <span>0{sectionIndex + 1}</span>
-                    <h4>{section.title}</h4>
-                    <p>{section.text}</p>
-                  </article>
-                ))}
-              </div>
+              {area.id === 'recovery-controller' ? (
+                <div class="recovery-gallery">
+                  <figure class="recovery-gallery__lead">
+                    <div class="recovery-gallery__frame">
+                      <img
+                        src={recoveryWorkflow.src}
+                        alt="PX4 recovery-controller workflow with live console output, QGroundControl, and a Gazebo drone simulation"
+                        width="3016"
+                        height="1372"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 01 / WORKFLOW</span>
+                      <div>
+                        <h4>Integrated simulation workflow</h4>
+                        <p>QGroundControl handled vehicle commands and telemetry while Gazebo visualized the PX4 simulation. The live console exposed controller state, timing, and handoff behavior during repeatable recovery tests.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <div class="recovery-gallery__support">
+                    <figure class="recovery-gallery__console">
+                      <div class="recovery-gallery__frame">
+                        <img
+                          src={recoveryConsole.src}
+                          alt="PX4 drop-recovery console logs progressing through wait, drop, recover, and handoff states"
+                          width="709"
+                          height="1278"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 01 / TELEMETRY</span>
+                        <div>
+                          <h4>State-machine telemetry</h4>
+                          <p>Structured logs trace WAIT, DROP, RECOVER, and HANDOFF alongside vertical motion, attitude, data freshness, thrust output, and PX4 command acknowledgements.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+
+                    <figure class="recovery-gallery__architecture">
+                      <div class="recovery-gallery__frame">
+                        <img
+                          src={recoveryArchitecture.src}
+                          alt="Recovery controller architecture: detect, engage, arrest descent, stabilize, and handoff"
+                          width="609"
+                          height="235"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 01 / ARCHITECTURE</span>
+                        <div>
+                          <h4>Recovery control architecture</h4>
+                          <p>The controller detects release, engages recovery, arrests descent, stabilizes the vehicle, and hands control back once recovery and telemetry checks are satisfied.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              ) : area.id === 'flight-test' ? (
+                <div class="flight-test-gallery">
+                  <figure class="flight-test-gallery__lead">
+                    <div class="flight-test-gallery__frame">
+                      <img
+                        src={flightTestDropConfiguration.src}
+                        alt="Carrier multirotor holding the bullet drone beneath its release rig during indoor drop-test preparation"
+                        width="1674"
+                        height="941"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 02 / DROP CONFIGURATION</span>
+                      <div>
+                        <h4>From captive carry to controlled release</h4>
+                        <p>The indoor rig paired the carrier aircraft with the bullet drone and release hardware so we could check attachment, clearance, communications, and vehicle response before progressing to free-drop testing. These preliminary runs made the full deployment sequence observable and repeatable before increasing test risk.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <div class="flight-test-gallery__support">
+                    <figure>
+                      <div class="flight-test-gallery__frame">
+                        <img
+                          src={flightTestCard.src}
+                          alt="Drop-flight test card documenting the vehicle configuration, objective, safety responses, batteries, sorties, and test observations"
+                          width="1450"
+                          height="1086"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 02 / TEST READINESS</span>
+                        <div>
+                          <h4>Planning each sortie before flight</h4>
+                          <p>This test card is one example of how we prepared for flight and drop testing: defining the configuration and objective beforehand, reviewing safety responses and battery limits, then tracking sortie data and observations so the team understood what happened and what to change next.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+
+                    <figure>
+                      <div class="flight-test-gallery__frame">
+                        <img
+                          src={flightTestPilotedValidation.src}
+                          alt="Two engineers conducting indoor piloted UAS testing in the NASA Ames Smart Mobility Laboratory"
+                          width="1450"
+                          height="1086"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 02 / FLIGHT OPERATIONS</span>
+                        <div>
+                          <h4>Building flight-test judgment across platforms</h4>
+                          <p>I piloted these tests to evaluate maneuverability, handling, and flight capability, gaining hands-on experience with observational flight testing and identifying off-nominal behavior while serving as the designated pilot.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              ) : area.id === 'prototyping' ? (
+                <div class="prototype-gallery">
+                  <figure class="prototype-gallery__lead">
+                    <div class="prototype-gallery__frame">
+                      <img
+                        src={prototypingFullCad.src}
+                        alt="CAD model of the complete helicopter-deployable search-and-rescue multirotor"
+                        width="1326"
+                        height="785"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 03 / ASSEMBLY</span>
+                      <div>
+                        <h4>Air-deployable multirotor architecture</h4>
+                        <p>The integrated assembly packaged the propulsion arms, avionics bay, and stabilizing surfaces into a compact helicopter-deployable vehicle. The design advanced through <strong>three airframe iterations in three weeks</strong>, including a <strong>flight-ready hardware build completed in four days</strong>.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <figure class="prototype-gallery__detail">
+                    <div class="prototype-gallery__frame">
+                      <img
+                        src={prototypingCrossSection.src}
+                        alt="Cross-section CAD view showing the bullet drone's internal avionics packaging and central structure"
+                        width="617"
+                        height="632"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 03 / PACKAGING</span>
+                      <div>
+                        <h4>Internal packaging and load path</h4>
+                        <p>The section view supported avionics-bay packaging, component access, and load-path reviews through the central body and propulsion mounts. That architecture carried into <strong>three fabricated 3D-printed airframes</strong> integrating <strong>nine flight-critical components</strong>.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <figure class="prototype-gallery__analysis">
+                    <div class="prototype-gallery__video">
+                      <video
+                        data-project-video
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="auto"
+                        disablepictureinpicture
+                        controlslist="nodownload nofullscreen noremoteplayback"
+                        aria-label="Finite-element analysis animation of the optimized structural plate"
+                      >
+                        <source src={prototypingPlateFeaUrl} type="video/mp4" />
+                      </video>
+                      <span>2× design load / 20%+ mass reduction</span>
+                    </div>
+                    <figcaption>
+                      <span>SYS. 03 / FEA</span>
+                      <div>
+                        <h4>Plate mass optimization under flight loads</h4>
+                        <p>Worst-case motor-thrust and rotor-wash cases were established with first-principles load calculations, then evaluated in FEA at <strong>2× the maximum expected loading</strong>. The redesigned plate reduced component mass by <strong>over 20%</strong> while maintaining analyzed structural margins.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+                </div>
+              ) : area.id === 'flight-log-analysis' ? (
+                <div class="flight-log-gallery">
+                  <figure class="flight-log-gallery__lead">
+                    <div class="flight-log-gallery__frame">
+                      <img
+                        src={flightLogHelicopterReport.src}
+                        alt="Custom flight-log analysis report for a helicopter flight with dataset, sample, dropout, and PX4 topic summaries"
+                        width="1696"
+                        height="1260"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 04 / REPORT</span>
+                      <div>
+                        <h4>Helicopter-flight report at a glance</h4>
+                        <p>The Python workflow parsed a <strong>35 min 40.5 sec flight</strong> into <strong>71 datasets</strong> and <strong>3,830,963 samples</strong>, surfaced <strong>287 telemetry dropouts</strong>, and inventoried available and missing PX4 topics before recovery review.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <figure class="flight-log-gallery__timeline">
+                    <div class="flight-log-gallery__frame">
+                      <img
+                        src={flightLogRecoveryTimeline.src}
+                        alt="Detected recovery event timeline from arming through deployment, recovery start, and stable hover"
+                        width="1241"
+                        height="338"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 04 / EVENTS</span>
+                      <div>
+                        <h4>Detected recovery sequence</h4>
+                        <p>Event detection aligned deployment, recovery start, and stable hover on one review timeline—showing <strong>1.29 seconds from release to recovery</strong> and <strong>4.83 seconds from release to stable hover</strong>.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <figure class="flight-log-gallery__signal">
+                    <div class="flight-log-gallery__frame">
+                      <img
+                        src={flightLogRecoverySignal.src}
+                        alt="Focused local-velocity graph with drop, recovery, and stable-flight event markers"
+                        width="1282"
+                        height="684"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption>
+                      <span>SYS. 04 / RECOVERY</span>
+                      <div>
+                        <h4>Recovery window with event markers</h4>
+                        <p>A focused <strong>550-sample recovery window</strong> overlays Drop, Recovery, and Stable markers on total local velocity, making descent arrest and post-release settling visible without searching the raw log.</p>
+                      </div>
+                    </figcaption>
+                  </figure>
+
+                  <div class="flight-log-gallery__diagnostics">
+                    <figure>
+                      <div class="flight-log-gallery__frame">
+                        <img
+                          src={flightLogZoomedVelocity.src}
+                          alt="Interactive total-velocity chart with a selected zoom region"
+                          width="1681"
+                          height="579"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 04 / SCALE</span>
+                        <div>
+                          <h4>High-volume log navigation</h4>
+                          <p>The interface reduces <strong>21,266 samples</strong> to <strong>900 plotted points</strong> for responsive review while retaining draggable zoom and pan controls for high-detail time windows.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+
+                    <figure>
+                      <div class="flight-log-gallery__frame">
+                        <img
+                          src={flightLogAxisComponents.src}
+                          alt="Interactive local-velocity chart showing independently selectable x, y, and z components"
+                          width="1690"
+                          height="687"
+                          loading="lazy"
+                        />
+                      </div>
+                      <figcaption>
+                        <span>SYS. 04 / SIGNALS</span>
+                        <div>
+                          <h4>Axis-level motion decomposition</h4>
+                          <p>Selectable total velocity and x-, y-, and z-axis traces isolate the direction driving a transient, supporting controller debugging and comparison between test events.</p>
+                        </div>
+                      </figcaption>
+                    </figure>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div class="project-focus__media-grid">
+                    {area.sections.map((section, sectionIndex) => (
+                      <MediaPlaceholder
+                        label={section.title}
+                        note={`Reserved for ${area.label.toLowerCase()} visual ${sectionIndex + 1}`}
+                        index={`SYS. 0${index + 1} / FIG. 0${sectionIndex + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <div class="project-focus__text-grid">
+                    {area.sections.map((section, sectionIndex) => (
+                      <article>
+                        <span>0{sectionIndex + 1}</span>
+                        <h4>{section.title}</h4>
+                        <p>{section.text}</p>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              )}
             </article>
           ))}
         </div>
