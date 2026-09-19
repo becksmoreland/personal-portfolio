@@ -56,7 +56,10 @@ const [primary, ...secondary] = sorted;
             <h3>San Diego State University</h3>
             <p>B.S. Aerospace Engineering</p>
           </div>
-          <img src="/sdsu-sd-mark.jpg" alt="SDSU SD mark" width="92" height="69" />
+          <picture>
+            <source media="(max-width: 760px)" srcset="/sdsu-monogram-white.png" />
+            <img src="/sdsu-sd-mark.jpg" alt="SDSU SD mark" width="92" height="69" />
+          </picture>
         </div>
         <dl class="education-card__facts">
           <div><dt>Grade level</dt><dd>Sophomore</dd></div>
@@ -222,7 +225,7 @@ const [primary, ...secondary] = sorted;
       </div>
       <nav class="contact__links" aria-label="Contact links">
         <a href="mailto:beckham.hayes@gmail.com" data-email-copy data-email-address="beckham.hayes@gmail.com"><span>Email<small data-email-copy-label aria-live="polite">beckham.hayes@gmail.com</small></span><span class="contact__link-icon" data-email-copy-icon aria-hidden="true">↗</span></a>
-        <a href="https://www.linkedin.com/in/becksm" target="_blank" rel="noreferrer"><span>LinkedIn<small>linkedin.com/in/becksm</small></span><span aria-hidden="true">↗</span></a>
+        <a href="https://www.linkedin.com/in/becksm" target="_blank" rel="noreferrer"><span>LinkedIn<small>Click to connect with me!</small></span><span aria-hidden="true">↗</span></a>
       </nav>
     </section>
   </main>
