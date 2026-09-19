@@ -21,7 +21,7 @@ const { detail = false } = Astro.props;
     <a href={detail ? '/#work' : '#work'} data-nav-link>Work</a>
     <a href="/resume/" data-nav-link>Résumé</a>
   </nav>
-  <a class="contact-cta" href={detail ? '/#contact' : '#contact'}>
+  <a class="contact-cta" href={detail ? '/#contact' : '#contact'} data-contact-trigger>
     Contact <span aria-hidden="true">↘</span>
   </a>
 </header>

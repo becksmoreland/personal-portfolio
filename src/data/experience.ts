@@ -36,7 +36,7 @@ export const experiences: Experience[] = [
     shortMark: 'NASA',
     logo: '/nasa-meatball.svg',
     role: 'UAS Engineering Intern',
-    dates: 'Jun 2026 — Present',
+    dates: 'Jun 2026 — Aug 2026',
     location: 'Moffett Field, CA',
     highlights: [
       'Built and integrated **3 SAR multirotor prototypes in 3 weeks**, including a **flight-ready first build completed in 4 days**, by translating **5 Air National Guard consultations** and a **6-concept trade study** into vehicle requirements.',

@@ -6,6 +6,7 @@ role: "UAS Engineering Intern"
 year: "2026"
 revision: "R03"
 status: "Case study in progress"
+published: true
 featured: true
 disciplines: ["Rapid Prototyping", "Test & Evaluation", "Avionics Integration"]
 problem: "California Air National Guard search-and-rescue operations can require a crewed Black Hawk sortie to locate a single missing person. Committing a full-size helicopter to broad-area search consumes substantial flight hours, fuel, crew time, and operating cost while limiting how quickly multiple search zones can be covered. The engineering objective was a compact, helicopter-deployable UAS that could recover after release and ultimately conduct autonomous SAR searches."

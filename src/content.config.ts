@@ -11,6 +11,7 @@ const projects = defineCollection({
     year: z.string(),
     revision: z.string(),
     status: z.string(),
+    published: z.boolean().default(false),
     featured: z.boolean().default(false),
     disciplines: z.array(z.string()),
     problem: z.string(),

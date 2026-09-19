@@ -5,7 +5,7 @@ import Header from '../components/Header.astro';
 import MediaPlaceholder from '../components/MediaPlaceholder.astro';
 import { campusActivities, experiences } from '../data/experience';
 
-const projects = await getCollection('projects');
+const projects = await getCollection('projects', ({ data }) => data.published);
 const sorted = projects.sort((a, b) => Number(b.data.featured) - Number(a.data.featured));
 const [primary, ...secondary] = sorted;
 ---
@@ -22,7 +22,7 @@ const [primary, ...secondary] = sorted;
           </div>
           <p class="hero__role">Aerospace engineer focused on autonomy, test &amp; evaluation, integration, and embedded software.</p>
           <p class="hero__lead">
-            I’m driven by work with real ownership—building and integrating aerospace systems that have to perform outside the lab. I want to help create the next generation of autonomous aircraft by carrying ideas from analysis through hardware, test, and flight.
+            I’m driven by work with real ownership. I want to build and integrate aerospace systems that perform outside the lab and help create the next generation of autonomous aircraft by carrying ideas from analysis through hardware, test, and flight.
           </p>
           <div class="hero__actions">
             <a class="button button--text" href="/resume/">Open résumé <span aria-hidden="true">↗</span></a>
@@ -40,7 +40,7 @@ const [primary, ...secondary] = sorted;
         <p class="section-label">01 / About</p>
         <h2>Learning by building,<br /><em>testing, and iterating.</em></h2>
         <p class="about__lead">
-          I’m a sophomore studying aerospace engineering at San Diego State University. I’m interested in the point where analysis becomes a working system—and where test results shape the next design.
+          I’m an aerospace engineering sophomore at San Diego State University and a former NASA Ames UAS engineering intern. I’m passionate about autonomous flight, building reliable hardware, and using hands-on testing to understand how each design can perform better.
         </p>
         <p>
           This portfolio is a growing record of my engineering work, including the decisions, technical evidence, and individual contributions behind each result.
@@ -154,7 +154,7 @@ const [primary, ...secondary] = sorted;
       <header class="section-heading" data-reveal>
         <p>03 / Selected work</p>
         <h2>Engineering decisions,<br />documented end to end.</h2>
-        <span>03 project records</span>
+        <span>01 project record</span>
       </header>
 
       <article class="featured-project" data-reveal>
@@ -190,26 +190,28 @@ const [primary, ...secondary] = sorted;
         </div>
       </article>
 
-      <div class="secondary-projects">
-        {secondary.map((project, index) => (
-          <article class="secondary-project" data-reveal>
-            <a href={`/projects/${project.data.slug}/`} aria-label={`Open ${project.data.title}`}>
-              <MediaPlaceholder
-                label={project.data.title}
-                note={index === 0 ? 'Replace with analysis output or a technical plot' : 'Replace with build, integration, or test photography'}
-                ratio="square"
-                index={`PRJ. 0${index + 2} / MEDIA`}
-              />
-            </a>
-            <div class="record-line">
-              <span>PRJ.0{index + 2}</span><span>{project.data.revision}</span><span>{project.data.year}</span>
-            </div>
-            <h3><a href={`/projects/${project.data.slug}/`}>{project.data.title}</a></h3>
-            <p>{project.data.summary}</p>
-            <a class="project-link" href={`/projects/${project.data.slug}/`}>View record <span aria-hidden="true">↗</span></a>
-          </article>
-        ))}
-      </div>
+      {secondary.length > 0 && (
+        <div class="secondary-projects">
+          {secondary.map((project, index) => (
+            <article class="secondary-project" data-reveal>
+              <a href={`/projects/${project.data.slug}/`} aria-label={`Open ${project.data.title}`}>
+                <MediaPlaceholder
+                  label={project.data.title}
+                  note={index === 0 ? 'Replace with analysis output or a technical plot' : 'Replace with build, integration, or test photography'}
+                  ratio="square"
+                  index={`PRJ. 0${index + 2} / MEDIA`}
+                />
+              </a>
+              <div class="record-line">
+                <span>PRJ.0{index + 2}</span><span>{project.data.revision}</span><span>{project.data.year}</span>
+              </div>
+              <h3><a href={`/projects/${project.data.slug}/`}>{project.data.title}</a></h3>
+              <p>{project.data.summary}</p>
+              <a class="project-link" href={`/projects/${project.data.slug}/`}>View record <span aria-hidden="true">↗</span></a>
+            </article>
+          ))}
+        </div>
+      )}
     </section>
 
     <section class="contact shell" id="contact" data-reveal>
